@@ -15,21 +15,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PermissionService {
     private final PermissionRepository permissionRepository;
-    private static final String NAME_OR_ROUTE_EXISTS = "Name or Route already exists";
+    private static final String NAME_OR_METHOD_OR_ROUTE_EXISTS = "Name or Route already exists";
     private static final String PERMISSION_NOT_EXISTS = "Permission not exists";
 
     public Permission handleCreatePermission(Permission reqCreatePermission) {
-        if(this.permissionRepository.existsByNameAndRoute(reqCreatePermission.getName(), reqCreatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_ROUTE_EXISTS);
+        if(this.permissionRepository.existsByNameAndMethodAndRoute(reqCreatePermission.getName(), reqCreatePermission.getMethod(), reqCreatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_METHOD_OR_ROUTE_EXISTS);
         return this.permissionRepository.save(reqCreatePermission);
     }
 
     public Permission handleUpdatePermission(Permission reqUpdatePermission) {
         Permission currentPermission = this.permissionRepository.findById(reqUpdatePermission.getId()).orElseThrow(() -> new ResourceNotFoundException(PERMISSION_NOT_EXISTS));
 
-        // check name and route
-        if(this.permissionRepository.existsByNameAndRoute(reqUpdatePermission.getName(), reqUpdatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_ROUTE_EXISTS);
+        // check name and route and method
+        if(this.permissionRepository.existsByNameAndMethodAndRoute(reqUpdatePermission.getName(), reqUpdatePermission.getMethod(), reqUpdatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_METHOD_OR_ROUTE_EXISTS);
 
         currentPermission.setName(reqUpdatePermission.getName());
+        currentPermission.setMethod(reqUpdatePermission.getMethod());
         currentPermission.setRoute(reqUpdatePermission.getRoute());
         return this.permissionRepository.save(currentPermission);
     }

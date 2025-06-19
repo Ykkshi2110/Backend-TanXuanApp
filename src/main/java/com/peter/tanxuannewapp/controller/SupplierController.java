@@ -3,6 +3,7 @@ package com.peter.tanxuannewapp.controller;
 import com.peter.tanxuannewapp.domain.Supplier;
 import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
 import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
+import com.peter.tanxuannewapp.domain.resposne.ResSupplierDTO;
 import com.peter.tanxuannewapp.service.SupplierService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class SupplierController {
 
     @PostMapping("/suppliers/create")
     @ApiMessage("Create a supplier")
-    public ResponseEntity<Supplier> createSupplier(@RequestBody @Valid Supplier reqSupplier) {
+    public ResponseEntity<ResSupplierDTO> createSupplier(@RequestBody @Valid Supplier reqSupplier) {
         return ResponseEntity
                 .status(HttpStatus.CREATED.value())
                 .body(this.supplierService.handleCreateSupplier(reqSupplier));
@@ -27,7 +28,7 @@ public class SupplierController {
 
     @PostMapping("/suppliers/update")
     @ApiMessage("Update a supplier")
-    public ResponseEntity<Supplier> updateSupplier(@RequestBody @Valid Supplier reqSupplier) {
+    public ResponseEntity<ResSupplierDTO> updateSupplier(@RequestBody @Valid Supplier reqSupplier) {
         return ResponseEntity.ok(this.supplierService.handleUpdateSupplier(reqSupplier));
     }
 
@@ -36,7 +37,7 @@ public class SupplierController {
     public ResponseEntity<Void> deleteSupplier(@PathVariable int id) {
         this.supplierService.handleDeleteSupplier(id);
         return ResponseEntity
-                .noContent()
+                .ok()
                 .build();
     }
 
@@ -48,7 +49,7 @@ public class SupplierController {
 
     @GetMapping("/suppliers/{id}")
     @ApiMessage("Fetch supplier by id")
-    public ResponseEntity<Supplier> fetchSupplierById(@PathVariable int id) {
+    public ResponseEntity<ResSupplierDTO> fetchSupplierById(@PathVariable int id) {
         return ResponseEntity.ok(this.supplierService.handleFetchSupplierById(id));
     }
 }

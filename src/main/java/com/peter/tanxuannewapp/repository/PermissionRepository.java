@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Integer> {
- boolean existsByNameAndRoute(String name, String route);
+ boolean existsByNameAndMethodAndRoute(String name, String method,  String route);
  List<Permission> findByIdIn(List<Integer> ids);
 }
