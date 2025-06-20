@@ -2,6 +2,7 @@ package com.peter.tanxuannewapp.controller;
 
 import com.peter.tanxuannewapp.domain.Supplier;
 import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
+import com.peter.tanxuannewapp.domain.criteria.CriteriaSearchSupplier;
 import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
 import com.peter.tanxuannewapp.domain.resposne.ResSupplierDTO;
 import com.peter.tanxuannewapp.service.SupplierService;
@@ -51,5 +52,11 @@ public class SupplierController {
     @ApiMessage("Fetch supplier by id")
     public ResponseEntity<ResSupplierDTO> fetchSupplierById(@PathVariable int id) {
         return ResponseEntity.ok(this.supplierService.handleFetchSupplierById(id));
+    }
+
+    @PostMapping("/suppliers/filter")
+    @ApiMessage("Filter supplier with criteria")
+    public ResponseEntity<PaginationResponse> filterSupplier(Pageable pageable, @RequestBody CriteriaSearchSupplier criteriaSearchSupplier) {
+        return ResponseEntity.ok(this.supplierService.handleFilteredSuppliers(pageable, criteriaSearchSupplier));
     }
 }

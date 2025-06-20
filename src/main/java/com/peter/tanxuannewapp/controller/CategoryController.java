@@ -2,6 +2,7 @@ package com.peter.tanxuannewapp.controller;
 
 import com.peter.tanxuannewapp.domain.Category;
 import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
+import com.peter.tanxuannewapp.domain.criteria.CriteriaSearchCategory;
 import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
 import com.peter.tanxuannewapp.service.CategoryService;
 import jakarta.validation.Valid;
@@ -50,5 +51,11 @@ public class CategoryController {
     @ApiMessage("Fetch category by id")
     public ResponseEntity<Category> fetchCategoryById(@PathVariable int id) {
         return ResponseEntity.ok(this.categoryService.handleFetchCategoryById(id));
+    }
+
+    @PostMapping("/categories/filter")
+    @ApiMessage("Filter category with criteria")
+    public ResponseEntity<PaginationResponse> filterCategoryWithCriteria(Pageable pageable,@RequestBody CriteriaSearchCategory criteriaSearchCategory) {
+        return ResponseEntity.ok(this.categoryService.handleFilteredCategories(pageable, criteriaSearchCategory));
     }
 }
