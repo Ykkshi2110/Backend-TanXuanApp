@@ -21,7 +21,7 @@ public class SupplierController {
 
     @PostMapping("/suppliers/create")
     @ApiMessage("Create a supplier")
-    public ResponseEntity<ResSupplierDTO> createSupplier(@RequestBody @Valid Supplier reqSupplier) {
+    public ResponseEntity<Supplier> createSupplier(@RequestBody @Valid Supplier reqSupplier) {
         return ResponseEntity
                 .status(HttpStatus.CREATED.value())
                 .body(this.supplierService.handleCreateSupplier(reqSupplier));
@@ -29,7 +29,7 @@ public class SupplierController {
 
     @PostMapping("/suppliers/update")
     @ApiMessage("Update a supplier")
-    public ResponseEntity<ResSupplierDTO> updateSupplier(@RequestBody @Valid Supplier reqSupplier) {
+    public ResponseEntity<Supplier> updateSupplier(@RequestBody @Valid Supplier reqSupplier) {
         return ResponseEntity.ok(this.supplierService.handleUpdateSupplier(reqSupplier));
     }
 

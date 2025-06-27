@@ -1,0 +1,23 @@
+package com.peter.tanxuannewapp.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class PermissionInterceptorConfiguration implements WebMvcConfigurer {
+
+    @Bean
+    public PermissionInterceptor permissionInterceptor() {
+        return new PermissionInterceptor();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        String[] whiteList = {
+                "/api/v1/login", "/api/v1/register", "/storage/**"
+        };
+        registry.addInterceptor(permissionInterceptor()).excludePathPatterns(whiteList);
+    }
+}

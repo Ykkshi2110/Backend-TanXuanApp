@@ -41,21 +41,19 @@ public class SupplierService {
         return supplierRepository.findById(supplierId).orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
 
-    public ResSupplierDTO handleCreateSupplier(Supplier reqSupplier) {
+    public Supplier handleCreateSupplier(Supplier reqSupplier) {
         if(this.supplierRepository.existsByName(reqSupplier.getName())) {
             throw new ResourceAlreadyExistsException(SUPPLIER_ALREADY_EXISTS_MESSAGE);
         }
-        this.supplierRepository.save(reqSupplier);
-        return this.convertSupplierToDTO(reqSupplier);
+        return this.supplierRepository.save(reqSupplier);
     }
 
-    public ResSupplierDTO handleUpdateSupplier(Supplier reqSupplier) {
+    public Supplier handleUpdateSupplier(Supplier reqSupplier) {
         Supplier currentSupplier = findSupplierById(reqSupplier.getId());
         currentSupplier.setName(reqSupplier.getName());
         currentSupplier.setActive(reqSupplier.isActive());
         currentSupplier.setContactInfo(reqSupplier.getContactInfo());
-        this.supplierRepository.save(currentSupplier);
-        return this.convertSupplierToDTO(currentSupplier);
+        return this.supplierRepository.save(currentSupplier);
     }
 
     public void handleDeleteSupplier(int reqSupplierId) {
@@ -94,7 +92,7 @@ public class SupplierService {
             booleanBuilder.and(qSupplier.contactInfo.containsIgnoreCase(criteriaSearchSupplier.getContactInfo()));
         }
         if(criteriaSearchSupplier.getActive() != null) {
-            booleanBuilder.and(qSupplier.active.isNotNull());
+            booleanBuilder.and(qSupplier.active.eq(criteriaSearchSupplier.getActive()));
         }
         if(criteriaSearchSupplier.getCreatedAt() != null && !criteriaSearchSupplier.getCreatedAt().isEmpty()){
             LocalDate localDate = LocalDate.parse(criteriaSearchSupplier.getCreatedAt());

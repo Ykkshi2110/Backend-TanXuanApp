@@ -68,12 +68,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Object>> handleAllException(Exception e) {
-        ApiResponse<Object> apiResponse = new ApiResponse<>();
-        apiResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        apiResponse.setMessage(e.getMessage());
-        apiResponse.setError("Internal server error...");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResponse<Object>> handleAllException(Exception e) {
+//        ApiResponse<Object> apiResponse = new ApiResponse<>();
+//        apiResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//        apiResponse.setMessage(e.getMessage());
+//        apiResponse.setError("Internal server error...");
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+//    }
 }

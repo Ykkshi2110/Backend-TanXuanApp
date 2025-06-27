@@ -37,7 +37,7 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
         this.categoryService.handleDeleteCategoryById(id);
         return ResponseEntity
-                .noContent()
+                .ok()
                 .build();
     }
 
