@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Integer>, QuerydslPredicateExecutor<Permission> {
- boolean existsByNameAndMethodAndRoute(String name, String method,  String route);
+ boolean existsByNameAndModuleAndMethodAndRoute(String name, String module ,String method,  String route);
  List<Permission> findByIdIn(List<Integer> ids);
 }

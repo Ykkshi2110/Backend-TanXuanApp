@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class CriteriaSearchPermission {
     private String name;
+    private String module;
     private String method;
     private String route;
     private String createdAt;

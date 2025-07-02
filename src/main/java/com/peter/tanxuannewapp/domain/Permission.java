@@ -22,6 +22,9 @@ public class Permission {
     @NotBlank(message = "Permission name must not be blank!")
     private String name;
 
+    @NotBlank(message = "Module must not be blank!")
+    private String module;
+
     @NotBlank(message = "Method must not be blank!")
     private String method;
 

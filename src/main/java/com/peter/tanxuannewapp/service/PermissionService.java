@@ -22,11 +22,11 @@ import java.time.ZoneId;
 @RequiredArgsConstructor
 public class PermissionService {
     private final PermissionRepository permissionRepository;
-    private static final String NAME_OR_METHOD_OR_ROUTE_EXISTS = "Name or Route already exists";
+    private static final String NAME_OR_MODULE_OR_METHOD_OR_ROUTE_EXISTS = "Name or Route already exists";
     private static final String PERMISSION_NOT_EXISTS = "Permission not exists";
 
     public Permission handleCreatePermission(Permission reqCreatePermission) {
-        if(this.permissionRepository.existsByNameAndMethodAndRoute(reqCreatePermission.getName(), reqCreatePermission.getMethod(), reqCreatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_METHOD_OR_ROUTE_EXISTS);
+        if(this.permissionRepository.existsByNameAndModuleAndMethodAndRoute(reqCreatePermission.getName(), reqCreatePermission.getModule(), reqCreatePermission.getMethod(), reqCreatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_MODULE_OR_METHOD_OR_ROUTE_EXISTS);
         return this.permissionRepository.save(reqCreatePermission);
     }
 
@@ -34,9 +34,10 @@ public class PermissionService {
         Permission currentPermission = this.permissionRepository.findById(reqUpdatePermission.getId()).orElseThrow(() -> new ResourceNotFoundException(PERMISSION_NOT_EXISTS));
 
         // check name and route and method
-        if(this.permissionRepository.existsByNameAndMethodAndRoute(reqUpdatePermission.getName(), reqUpdatePermission.getMethod(), reqUpdatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_METHOD_OR_ROUTE_EXISTS);
+        if(this.permissionRepository.existsByNameAndModuleAndMethodAndRoute(reqUpdatePermission.getName(),reqUpdatePermission.getModule(), reqUpdatePermission.getMethod(), reqUpdatePermission.getRoute())) throw new ResourceAlreadyExistsException(NAME_OR_MODULE_OR_METHOD_OR_ROUTE_EXISTS);
 
         currentPermission.setName(reqUpdatePermission.getName());
+        currentPermission.setModule(reqUpdatePermission.getModule());
         currentPermission.setMethod(reqUpdatePermission.getMethod());
         currentPermission.setRoute(reqUpdatePermission.getRoute());
         return this.permissionRepository.save(currentPermission);
@@ -72,6 +73,9 @@ public class PermissionService {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if(criteriaSearchPermission.getName() != null && !criteriaSearchPermission.getName().isEmpty()) {
             booleanBuilder.and(qPermission.name.containsIgnoreCase(criteriaSearchPermission.getName()));
+        }
+        if(criteriaSearchPermission.getModule() != null && !criteriaSearchPermission.getModule().isEmpty()) {
+            booleanBuilder.and(qPermission.module.containsIgnoreCase(criteriaSearchPermission.getModule()));
         }
         if(criteriaSearchPermission.getMethod() != null && !criteriaSearchPermission.getMethod().isEmpty()) {
             booleanBuilder.and(qPermission.method.containsIgnoreCase(criteriaSearchPermission.getMethod()));
