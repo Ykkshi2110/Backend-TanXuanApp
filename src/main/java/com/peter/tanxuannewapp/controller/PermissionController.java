@@ -21,13 +21,15 @@ public class PermissionController {
     @PostMapping("/permissions/create")
     @ApiMessage("Create a permission")
     public ResponseEntity<Permission> createPermission(@RequestBody @Valid Permission reqCreatePermission) {
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(this.permissionService.handleCreatePermission(reqCreatePermission));
+        return ResponseEntity.status(HttpStatus.CREATED.value())
+                .body(this.permissionService.handleCreatePermission(reqCreatePermission));
     }
 
     @PostMapping("/permissions/update")
     @ApiMessage("Update a permission")
     public ResponseEntity<Permission> updatePermission(@RequestBody @Valid Permission reqUpdatePermission) {
-        return ResponseEntity.status(HttpStatus.OK.value()).body(this.permissionService.handleUpdatePermission(reqUpdatePermission));
+        return ResponseEntity.status(HttpStatus.OK.value())
+                .body(this.permissionService.handleUpdatePermission(reqUpdatePermission));
     }
 
     @DeleteMapping("/permissions/delete/{id}")
@@ -40,7 +42,8 @@ public class PermissionController {
     @GetMapping("/permissions")
     @ApiMessage("Fetch all permissions")
     public ResponseEntity<PaginationResponse> fetchAllPermissions(Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK.value()).body(this.permissionService.handleFetchAllPermissions(pageable));
+        return ResponseEntity.status(HttpStatus.OK.value())
+                .body(this.permissionService.handleFetchAllPermissions(pageable));
     }
 
     @GetMapping("/permissions/{id}")
@@ -51,7 +54,8 @@ public class PermissionController {
 
     @PostMapping("/permissions/filter")
     @ApiMessage("Filter permission with criteria")
-    public ResponseEntity<PaginationResponse> filterPermissionWithCriteria(Pageable pageable,@RequestBody CriteriaSearchPermission criteriaSearchPermission) {
+    public ResponseEntity<PaginationResponse> filterPermissionWithCriteria(Pageable pageable,
+            @RequestBody CriteriaSearchPermission criteriaSearchPermission) {
         return ResponseEntity.ok(this.permissionService.handleFilteredPermissions(pageable, criteriaSearchPermission));
     }
 }

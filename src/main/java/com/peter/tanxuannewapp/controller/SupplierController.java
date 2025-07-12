@@ -56,7 +56,8 @@ public class SupplierController {
 
     @PostMapping("/suppliers/filter")
     @ApiMessage("Filter supplier with criteria")
-    public ResponseEntity<PaginationResponse> filterSupplier(Pageable pageable, @RequestBody CriteriaSearchSupplier criteriaSearchSupplier) {
+    public ResponseEntity<PaginationResponse> filterSupplier(Pageable pageable,
+            @RequestBody CriteriaSearchSupplier criteriaSearchSupplier) {
         return ResponseEntity.ok(this.supplierService.handleFilteredSuppliers(pageable, criteriaSearchSupplier));
     }
 }

@@ -57,7 +57,8 @@ public class ProductController {
 
     @PostMapping("/products/filter")
     @ApiMessage("Filter product with criteria")
-    public ResponseEntity<PaginationResponse> filterProduct(Pageable pageable, @RequestBody CriteriaSearchProduct criteriaSearchProduct) {
+    public ResponseEntity<PaginationResponse> filterProduct(Pageable pageable,
+            @RequestBody CriteriaSearchProduct criteriaSearchProduct) {
         return ResponseEntity.ok(this.productService.handleFilteredProducts(pageable, criteriaSearchProduct));
     }
 }

@@ -55,7 +55,8 @@ public class CategoryController {
 
     @PostMapping("/categories/filter")
     @ApiMessage("Filter category with criteria")
-    public ResponseEntity<PaginationResponse> filterCategoryWithCriteria(Pageable pageable,@RequestBody CriteriaSearchCategory criteriaSearchCategory) {
+    public ResponseEntity<PaginationResponse> filterCategoryWithCriteria(Pageable pageable,
+            @RequestBody CriteriaSearchCategory criteriaSearchCategory) {
         return ResponseEntity.ok(this.categoryService.handleFilteredCategories(pageable, criteriaSearchCategory));
     }
 }

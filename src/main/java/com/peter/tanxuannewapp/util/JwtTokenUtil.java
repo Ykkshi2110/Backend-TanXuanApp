@@ -2,7 +2,6 @@ package com.peter.tanxuannewapp.util;
 
 import com.nimbusds.jose.util.Base64;
 import com.peter.tanxuannewapp.domain.resposne.ResLoginDTO;
-import com.peter.tanxuannewapp.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenUtil {
-    private final CustomUserDetailsService userDetailsService;
     @Value("${peterBui.jwt.base64-secret}")
     private String jwtSecretKey;
 

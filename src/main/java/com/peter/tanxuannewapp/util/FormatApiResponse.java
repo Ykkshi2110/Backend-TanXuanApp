@@ -21,18 +21,29 @@ public class FormatApiResponse implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
+            ServerHttpResponse response) {
         HttpServletResponse httpResponse = ((ServletServerHttpResponse) response).getServletResponse();
         int status = httpResponse.getStatus();
 
-        if(body instanceof String) {
+        if (body instanceof String) {
             return body;
+        }
+
+        if(body == null){
+            ApiResponse<Object> res = new ApiResponse<>();
+            res.setStatusCode(status);
+            ApiMessage message = returnType.getMethodAnnotation(ApiMessage.class);
+            res.setMessage(message != null ? message.value() : "Call api success");
+            res.setData(null);
+            return res;
         }
 
         ApiResponse<Object> res = new ApiResponse<>();
         res.setStatusCode(status);
 
-        if(status >= 400){
+        if (status >= 400) {
             return body;
         } else {
             res.setData(body);

@@ -2,6 +2,7 @@ package com.peter.tanxuannewapp.controller;
 
 import com.peter.tanxuannewapp.domain.Role;
 import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
+import com.peter.tanxuannewapp.domain.criteria.CriteriaSearchRole;
 import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
 import com.peter.tanxuannewapp.service.RoleService;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class RoleController {
     @ApiMessage("Delete a role")
     public ResponseEntity<Void> deleteRole(@PathVariable int id) {
         this.roleService.handleDeleteRole(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT.value()).body(null);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/roles")
@@ -46,5 +47,11 @@ public class RoleController {
     @ApiMessage("Fetch role by id")
     public ResponseEntity<Role> fetchRoleById(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK.value()).body(this.roleService.handleFetchRoleById(id));
+    }
+ 
+    @PostMapping("/roles/filter")
+    @ApiMessage("Filter roles with criteria")
+    public ResponseEntity<PaginationResponse> filterRolesWithCriteria(Pageable pageable, @RequestBody CriteriaSearchRole criteriaSearchRole) {
+        return ResponseEntity.ok(this.roleService.handleFilteredRoles(pageable, criteriaSearchRole));
     }
 }

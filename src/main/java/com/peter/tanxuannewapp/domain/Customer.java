@@ -21,11 +21,24 @@ public class Customer {
     @NotBlank(message = "Name must not be blank!")
     private String name;
 
+    @NotBlank(message = "Email must not be blank!")
+    private String email;
+
+    @NotBlank(message = "Password must not be blank!")
+    private String password;
+
     @NotNull
     private String phone;
 
     @NotNull
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String refreshToken;
 
     private double latitude;
 

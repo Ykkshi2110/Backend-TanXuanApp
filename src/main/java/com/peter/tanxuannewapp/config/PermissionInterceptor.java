@@ -18,11 +18,12 @@ import org.springframework.web.servlet.HandlerMapping;
 public class PermissionInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(PermissionInterceptor.class);
 
-    @Autowired UserService userService;
+    @Autowired
+    UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-        String path = (String)request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        String path = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         String requestURI = request.getRequestURI();
         String methodType = request.getMethod();
         logger.info("path: {}", path);
@@ -30,15 +31,15 @@ public class PermissionInterceptor implements HandlerInterceptor {
         logger.info("methodType: {}", methodType);
 
         String email = JwtTokenUtil.getCurrentUserLogin().orElse(null);
-        if(email != null && !email.isEmpty()){
+        if (email != null && !email.isEmpty()) {
             User currentUser = this.userService.handleGetUserByEmail(email);
-            if(currentUser != null){
+            if (currentUser != null) {
                 Role role = currentUser.getRole();
-                if(role != null){
-                    boolean isAllow = role.getPermissions().stream().anyMatch(permission ->
-                            permission.getRoute().equals(requestURI) && permission.getMethod().equals(methodType)
-                    );
-                    if(!isAllow){
+                if (role != null) {
+                    boolean isAllow = role.getPermissions().stream()
+                            .anyMatch(permission -> permission.getRoute().equals(requestURI)
+                                    && permission.getMethod().equals(methodType));
+                    if (!isAllow) {
                         throw new ResourceNotFoundException("Access denied");
                     }
                 } else {

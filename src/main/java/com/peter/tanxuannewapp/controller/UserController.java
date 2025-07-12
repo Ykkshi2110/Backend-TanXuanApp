@@ -38,7 +38,7 @@ public class UserController {
 
     @DeleteMapping("/users/delete/{id}")
     @ApiMessage("Delete a user")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         this.userService.handleDeleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
@@ -57,7 +57,8 @@ public class UserController {
 
     @PostMapping("/users/filter")
     @ApiMessage("Filter user with criteria")
-    public ResponseEntity<PaginationResponse> fetchUserWithCriteria(Pageable pageable, @RequestBody CriteriaSearchUser criteria) {
+    public ResponseEntity<PaginationResponse> fetchUserWithCriteria(Pageable pageable,
+            @RequestBody CriteriaSearchUser criteria) {
         return ResponseEntity.ok().body(this.userService.handleFilteredUsers(pageable, criteria));
     }
 }
