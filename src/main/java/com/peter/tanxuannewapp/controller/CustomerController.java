@@ -1,22 +1,15 @@
 package com.peter.tanxuannewapp.controller;
 
+import com.peter.tanxuannewapp.domain.Customer;
+import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
+import com.peter.tanxuannewapp.domain.criteria.CriteriaSearchCustomer;
+import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
+import com.peter.tanxuannewapp.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.peter.tanxuannewapp.domain.Customer;
-import com.peter.tanxuannewapp.domain.annotation.ApiMessage;
-import com.peter.tanxuannewapp.domain.resposne.PaginationResponse;
-import com.peter.tanxuannewapp.service.CustomerService;
-
-import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,6 +41,12 @@ public class CustomerController {
     @ApiMessage("Fetch all customers")
     public ResponseEntity<PaginationResponse> fetchAllCustomers(Pageable pageable) {
         return ResponseEntity.ok(this.customerService.handleFetchAllCustomers(pageable));
+    }
+
+    @PostMapping("/customers/filter")
+    @ApiMessage("Filter customer with criteria")
+    public ResponseEntity<PaginationResponse> fetchCustomerWithCriteria(Pageable pageable, @RequestBody CriteriaSearchCustomer criteriaSearchCustomer) {
+        return ResponseEntity.ok().body(this.customerService.handleFilteredCustomers(pageable, criteriaSearchCustomer));
     }
 
     @GetMapping("/customers/{id}")
