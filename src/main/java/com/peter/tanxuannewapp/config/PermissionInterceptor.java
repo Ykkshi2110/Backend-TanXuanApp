@@ -1,12 +1,11 @@
 package com.peter.tanxuannewapp.config;
 
-import com.peter.tanxuannewapp.domain.Role;
-import com.peter.tanxuannewapp.domain.User;
 import com.peter.tanxuannewapp.exception.ResourceNotFoundException;
-import com.peter.tanxuannewapp.service.UserService;
+import com.peter.tanxuannewapp.service.AuthService;
 import com.peter.tanxuannewapp.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
 @Transactional
+@RequiredArgsConstructor
 public class PermissionInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(PermissionInterceptor.class);
 
     @Autowired
-    UserService userService;
+    AuthService authService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
@@ -30,23 +30,12 @@ public class PermissionInterceptor implements HandlerInterceptor {
         logger.info("requestURI: {}", requestURI);
         logger.info("methodType: {}", methodType);
 
-        String email = JwtTokenUtil.getCurrentUserLogin().orElse(null);
-        if (email != null && !email.isEmpty()) {
-            User currentUser = this.userService.handleGetUserByEmail(email);
-            if (currentUser != null) {
-                Role role = currentUser.getRole();
-                if (role != null) {
-                    boolean isAllow = role.getPermissions().stream()
-                            .anyMatch(permission -> permission.getRoute().equals(requestURI)
-                                    && permission.getMethod().equals(methodType));
-                    if (!isAllow) {
-                        throw new ResourceNotFoundException("Access denied");
-                    }
-                } else {
-                    throw new ResourceNotFoundException("Access denied");
-                }
-            }
+        if (JwtTokenUtil
+                .getCurrentUserLogin()
+                .map(email -> authService.hasPermission(email, requestURI, methodType)).orElse(false)){
+            return true;
+        } else {
+            throw new ResourceNotFoundException("Access Denied");
         }
-        return true;
     }
 }
