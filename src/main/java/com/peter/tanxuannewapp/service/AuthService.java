@@ -216,7 +216,7 @@ public class AuthService {
         }
     }
 
-    public boolean hasPermission(String email, String requestURI, String methodType) {
-        return this.permissionRepository.existsByRolesUsersEmailAndRouteAndMethod(email, requestURI, methodType);
+    public boolean hasPermission(String email, String path, String methodType) {
+        return this.permissionRepository.existsByRolesUsersEmailAndRouteAndMethod(email, path, methodType);
     }
 }

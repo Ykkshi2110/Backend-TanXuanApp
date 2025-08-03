@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,7 +53,8 @@ public class SecurityConfiguration {
         http
                 .securityMatcher("/api/v1/refresh")
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll())
+                        .anyRequest()
+                        .permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -61,14 +63,18 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint entryPoint)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint entryPoint) throws Exception {
+        String[] whiteList = {"/api/v1/login", "/api/v1/register", "/api/v1/admin/login", "/api/v1/admin/register", "/storage/**", "/openapi/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/tanxuan-api-docs/**", "/swagger-resources/**", "/webjars/**"};
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/login", "/api/v1/register", "/api/v1/admin/login",
-                                "/api/v1/admin/register", "/api/v1/categories", "/storage/**")
+                        .requestMatchers(whiteList)
                         .permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2

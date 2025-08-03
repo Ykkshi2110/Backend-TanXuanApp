@@ -32,7 +32,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
         if (JwtTokenUtil
                 .getCurrentUserLogin()
-                .map(email -> authService.hasPermission(email, requestURI, methodType)).orElse(false)){
+                .map(email -> authService.hasPermission(email, path, methodType)).orElse(false)){
             return true;
         } else {
             throw new ResourceNotFoundException("Access Denied");
