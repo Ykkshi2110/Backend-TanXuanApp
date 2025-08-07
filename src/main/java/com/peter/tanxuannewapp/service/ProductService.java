@@ -120,6 +120,9 @@ public class ProductService {
         if(criteria.getPrice() != 0) {
             builder.and(qProduct.price.eq(criteria.getPrice()));
         }
+        if(criteria.getPriceRange() != null && (criteria.getPriceRange().getMin() != 0 || criteria.getPriceRange().getMax() != 0)) {
+            builder.and(qProduct.price.between(criteria.getPriceRange().getMin(), criteria.getPriceRange().getMax()));
+        }
 
         Page<Product> productPages = this.productRepository.findAll(builder, pageable);
         Page<ResProductDTO> productDTOPages = productPages.map(this::convertToProductDTO);

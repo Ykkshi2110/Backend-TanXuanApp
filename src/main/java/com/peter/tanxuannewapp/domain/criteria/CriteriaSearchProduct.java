@@ -2,8 +2,7 @@ package com.peter.tanxuannewapp.domain.criteria;
 
 import com.peter.tanxuannewapp.domain.Category;
 import com.peter.tanxuannewapp.domain.Supplier;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -14,4 +13,14 @@ public class CriteriaSearchProduct {
     private String unit;
     private int quantity;
     private double price;
+    private PriceRange priceRange;
+
+    @Getter
+    @Setter
+    public static class PriceRange {
+        private double min;
+        private double max;
+    }
 }
+
+
